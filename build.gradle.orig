@@ -1,0 +1,59 @@
+plugins {
+    id "groovy"
+    id "java"
+	id "eclipse"
+    id "jaci.openrio.gradle.GradleRIO" version "2017.1.5"
+    id 'com.github.johnrengelman.shadow' version "1.2.4"
+}
+
+frc {
+	team = "4215"
+	robotClass = "org.usfirst.frc.team4215.robot.Robot"
+}
+
+wpi {
+  cscoreVersion="1.0.2"
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile wpilib()
+	compile talonSrx()
+	testCompile 'org.codehaus.groovy:groovy-all:2.4.6'	
+	testCompile 'cglib:cglib:3.2.4'
+	testCompile 'org.springframework:spring-test:4.3.7.RELEASE'
+	testCompile 'org.springframework:spring-aop:4.3.7.RELEASE'
+}
+
+def robotManifest = {
+  attributes 'Main-Class': 'edu.wpi.first.wpilibj.RobotBase'
+  attributes 'Robot-Class': frc.robotClass
+}
+
+shadowJar {
+	manifest{
+	  attributes 'Main-Class': 'edu.wpi.first.wpilibj.RobotBase'
+	  attributes 'Robot-Class': frc.robotClass
+	}
+	archiveName = 'TestBedIterative.jar'
+}
+
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+                'Main-Class': 'edu.wpi.first.wpilibj.RobotBase',
+                'Robot-Class': robotClass
+        )
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }	
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '3.2.1'
+}

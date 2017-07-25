@@ -1,0 +1,4 @@
+// rootProject.name = 'TestBedIterative'
+// gradle.ext.home = System.getProperty("user.home")
+// gradle.ext.wpilibLibDir = "${gradle.ext.home}/wpilib/java/current/lib/native/"
+// gradle.ext.wpilibAntDir = "${gradle.ext.home}/wpilib/java/current/ant/"
